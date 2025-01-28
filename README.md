@@ -24,24 +24,23 @@ API Rest para um Sistema de Analise de Solicitação de Crédito
 </p>
 
 
-
-### Descrição do Projeto
+## Descrição do Projeto
 
 Veja [este Gist](https://gist.github.com/cami-la/560b455b901778391abd2c9edea81286) da professora Camila Cavalcante. Este repositório é baseado [neste repositório](https://github.com/cami-la/credit-application-system) da professora Camila Cavalcante.
 
 
-### Diagrama UML
+## Diagrama UML
 
 ![Diagrama UML](https://i.imgur.com/7phya16.png)
 
 
-### Executando o projeto
+## Executando o projeto
 
 - Faça um clone do projeto
 - Entre na pasta raiz do projeto 
 - Execute o comando: `./gradlew bootrun`
 
 
-### Executando os testes
+## Executando os testes
 
 Eu executei os testes na IntelliJ IDE Community
