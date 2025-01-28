@@ -43,4 +43,9 @@ Veja [este Gist](https://gist.github.com/cami-la/560b455b901778391abd2c9edea8128
 
 ## Executando os testes
 
-Eu executei os testes na IntelliJ IDE Community
+Eu executei os testes na IntelliJ IDE Community.
+
+
+## Como rodar a aplicação e os testes
+
+Veja [este vídeo](https://youtu.be/Uh2UG1RuMEU).
