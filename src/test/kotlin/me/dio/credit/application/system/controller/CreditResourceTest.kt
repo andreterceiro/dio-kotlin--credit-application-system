@@ -79,6 +79,20 @@ class CreditResourceTest {
         )
     }
 
+    @Test
+    fun `should not save a credit with a creditValue = 0 and return 400 status`() {
+        //given
+        val creditDto: CreditDto = builderCreditDto(creditValue = 0.toBigDecimal())
+        val valueAsString: String = objectMapper.writeValueAsString(creditDto)
+        //when
+        //then
+        mockMvc.perform(
+            MockMvcRequestBuilders.post(me.dio.credit.application.system.controller.CustomerResourceTest.URL)
+                .content(valueAsString)
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isBadRequest)
+    }
+
     private fun builderCreditDto(
         creditValue: BigDecimal = 1000.toBigDecimal(),
         dayFirstOfInstallment: LocalDate = LocalDate.now().plusDays(1),
