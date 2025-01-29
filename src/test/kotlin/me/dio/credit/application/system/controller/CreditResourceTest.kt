@@ -68,9 +68,15 @@ class CreditResourceTest {
         //given
         val creditDto: CreditDto = builderCreditDto()
         val valueAsString: String = objectMapper.writeValueAsString(creditDto)
+
         //when
+
         //then
-        Assertions.assertThat(true)
+        mockMvc.perform(
+            MockMvcRequestBuilders.post(URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(valueAsString)
+        )
     }
 
     private fun builderCreditDto(
