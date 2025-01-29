@@ -57,7 +57,10 @@ class CreditResourceTest {
     }
 
     @AfterEach
-    fun tearDown() = creditRepository.deleteAll()
+    fun tearDown() {
+        creditRepository.deleteAll()
+        customerRepository.deleteAll()
+    }
 
     @Test
     fun `should create a credit and return 201 status`() {
