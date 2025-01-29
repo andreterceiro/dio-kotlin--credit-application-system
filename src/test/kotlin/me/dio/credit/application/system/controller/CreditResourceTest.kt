@@ -63,8 +63,6 @@ class CreditResourceTest {
     fun setup() {
         creditRepository.deleteAll()
         customerRepository.deleteAll()
-        val customer = customerRepository.save(builderCustomerDto().toEntity())
-        this.customerId = customer.id!!
     }
 
     @AfterEach
@@ -76,6 +74,8 @@ class CreditResourceTest {
     @Test
     fun `should create a credit and return 201 status`() {
         //given
+        val customer = customerRepository.save(builderCustomerDto().toEntity())
+        this.customerId = customer.id!!
         val creditDto: CreditDto = builderCreditDto(customerId = this.customerId)
         val valueAsString: String = objectMapper.writeValueAsString(creditDto)
 
