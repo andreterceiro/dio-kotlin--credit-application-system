@@ -5,11 +5,13 @@ import jakarta.validation.constraints.Future
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotNull
+import me.dio.credit.application.system.controller.CustomerResourceTest.Companion
 import me.dio.credit.application.system.dto.request.CreditDto
 import me.dio.credit.application.system.dto.request.CustomerDto
 import me.dio.credit.application.system.dto.request.CustomerUpdateDto
 import me.dio.credit.application.system.entity.Customer
 import me.dio.credit.application.system.repository.CreditRepository
+import me.dio.credit.application.system.repository.CustomerRepository
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -50,6 +52,30 @@ class CreditResourceTest {
 
     @AfterEach
     fun tearDown() = creditRepository.deleteAll()
+
+    @Test
+    fun `should create a credit and return 201 status`() {
+        //given
+        val customerDto: CustomerDto = builderCustomerDto()
+        val valueAsString: String = objectMapper.writeValueAsString(customerDto)
+        //when
+        //then
+        mockMvc.perform(
+            MockMvcRequestBuilders.post(CustomerResourceTest.URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(valueAsString)
+        )
+            .andExpect(MockMvcResultMatchers.status().isCreated)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").value("Cami"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.lastName").value("Cavalcante"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.cpf").value("28475934625"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.email").value("camila@email.com"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.income").value("1000.0"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.zipCode").value("000000"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.street").value("Rua da Cami, 123"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
+            .andDo(MockMvcResultHandlers.print())
+    }
 
     private fun builderCreditDto(
         creditValue: BigDecimal = 1000.toBigDecimal(),
