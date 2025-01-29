@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Future
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotNull
+import me.dio.credit.application.system.dto.request.CreditDto
 import me.dio.credit.application.system.dto.request.CustomerDto
 import me.dio.credit.application.system.dto.request.CustomerUpdateDto
 import me.dio.credit.application.system.entity.Customer
@@ -49,5 +50,16 @@ class CreditResourceTest {
 
     @AfterEach
     fun tearDown() = creditRepository.deleteAll()
-// LocalDate.now().plusDays(1)
+
+    private fun builderCreditDto(
+        creditValue: BigDecimal = 1000.toBigDecimal(),
+        dayFirstOfInstallment: LocalDate = LocalDate.now().plusDays(1),
+        numberOfInstalments: Int = 2,
+        customerId: Long = 1L
+    ) = CreditDto(
+        creditValue = creditValue,
+        dayFirstOfInstallment = dayFirstOfInstallment,
+        numberOfInstallments = numberOfInstalments,
+        customerId = customerId,
+    )
 }
