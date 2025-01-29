@@ -9,6 +9,7 @@ import me.dio.credit.application.system.controller.CustomerResourceTest.Companio
 import me.dio.credit.application.system.dto.request.CreditDto
 import me.dio.credit.application.system.dto.request.CustomerDto
 import me.dio.credit.application.system.dto.request.CustomerUpdateDto
+import me.dio.credit.application.system.entity.Address
 import me.dio.credit.application.system.entity.Customer
 import me.dio.credit.application.system.repository.CreditRepository
 import me.dio.credit.application.system.repository.CustomerRepository
@@ -17,6 +18,8 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
@@ -29,11 +32,13 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.util.Random
+import org.springframework.transaction.annotation.Transactional
 
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 @ContextConfiguration
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class CreditResourceTest {
     @Autowired
     private lateinit var creditRepository: CreditRepository
@@ -47,14 +52,19 @@ class CreditResourceTest {
     @Autowired
     private lateinit var objectMapper: ObjectMapper
 
+    private var customerId: Long = 0
+
     companion object {
-        const val URL: String = "/api/customers"
+        const val URL: String = "/api/credits"
     }
 
     @BeforeEach
+    @Transactional
     fun setup() {
         creditRepository.deleteAll()
         customerRepository.deleteAll()
+        val customer = customerRepository.save(builderCustomerDto().toEntity())
+        this.customerId = customer.id!!
     }
 
     @AfterEach
@@ -66,7 +76,7 @@ class CreditResourceTest {
     @Test
     fun `should create a credit and return 201 status`() {
         //given
-        val creditDto: CreditDto = builderCreditDto()
+        val creditDto: CreditDto = builderCreditDto(customerId = this.customerId)
         val valueAsString: String = objectMapper.writeValueAsString(creditDto)
 
         //when
@@ -76,7 +86,7 @@ class CreditResourceTest {
             MockMvcRequestBuilders.post(URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(valueAsString)
-        )
+        ).andExpect(MockMvcResultMatchers.status().isCreated)
     }
 
     @Test
