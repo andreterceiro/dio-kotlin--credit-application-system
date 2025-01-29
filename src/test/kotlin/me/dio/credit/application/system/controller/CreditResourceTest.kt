@@ -1,6 +1,7 @@
 package me.dio.credit.application.system.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.mockk.InternalPlatformDsl.toArray
 import jakarta.validation.constraints.Future
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
@@ -33,6 +34,7 @@ import java.math.BigDecimal
 import java.time.LocalDate
 import java.util.Random
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.util.Assert
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -101,6 +103,28 @@ class CreditResourceTest {
                 .content(valueAsString)
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isBadRequest)
+    }
+
+    @Test
+    fun `find all by customerId`() {
+        //given
+        val customer = customerRepository.save(builderCustomerDto().toEntity())
+        this.customerId = customer.id!!
+        val creditDto1: CreditDto = builderCreditDto(customerId = this.customerId)
+        val creditDto2: CreditDto = builderCreditDto(customerId = this.customerId)
+        creditRepository.save(creditDto1.toEntity())
+        creditRepository.save(creditDto2.toEntity())
+
+        //when
+
+        //then
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("${URL}?customerId=${customerId}")
+                .accept(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andDo(MockMvcResultHandlers.print())
+        //Assertions.assertThat(MockMvcResultMatchers.content().toString().toArray().size == 2)
     }
 
     private fun builderCreditDto(
