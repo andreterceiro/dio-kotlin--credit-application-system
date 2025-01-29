@@ -62,4 +62,24 @@ class CreditResourceTest {
         numberOfInstallments = numberOfInstalments,
         customerId = customerId,
     )
+
+    private fun builderCustomerDto(
+        firstName: String = "Cami",
+        lastName: String = "Cavalcante",
+        cpf: String = "28475934625",
+        email: String = "camila@email.com",
+        income: BigDecimal = BigDecimal.valueOf(1000.0),
+        password: String = "1234",
+        zipCode: String = "000000",
+        street: String = "Rua da Cami, 123",
+    ) = CustomerDto(
+        firstName = firstName,
+        lastName = lastName,
+        cpf = cpf,
+        email = email,
+        income = income,
+        password = password,
+        zipCode = zipCode,
+        street = street
+    )
 }
