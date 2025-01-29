@@ -38,6 +38,9 @@ class CreditResourceTest {
     private lateinit var creditRepository: CreditRepository
 
     @Autowired
+    private lateinit var customerRepository: CustomerRepository
+
+    @Autowired
     private lateinit var mockMvc: MockMvc
 
     @Autowired
@@ -48,7 +51,10 @@ class CreditResourceTest {
     }
 
     @BeforeEach
-    fun setup() = creditRepository.deleteAll()
+    fun setup() {
+        creditRepository.deleteAll()
+        customerRepository.deleteAll()
+    }
 
     @AfterEach
     fun tearDown() = creditRepository.deleteAll()
