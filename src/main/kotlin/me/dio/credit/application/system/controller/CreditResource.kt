@@ -41,6 +41,9 @@ class CreditResource(
     @PathVariable creditCode: UUID
   ): ResponseEntity<CreditView> {
     val credit: Credit = this.creditService.findByCreditCode(customerId, creditCode)
+    /*print("-------------------------------")
+    print(credit.creditCode)
+    print("-------------------------------")*/
     return ResponseEntity.status(HttpStatus.OK).body(CreditView(credit))
   }
 }
