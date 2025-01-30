@@ -127,6 +127,27 @@ class CreditResourceTest {
         //Assertions.assertThat(MockMvcResultMatchers.content().toString().toArray().size == 2)
     }
 
+    @Test
+    fun `must find using a credit code`(){
+        // given
+        val customer = customerRepository.save(builderCustomerDto().toEntity())
+        this.customerId = customer.id!!
+        val creditDto: CreditDto = builderCreditDto(customerId = this.customerId)
+        val credit = creditDto.toEntity()
+        creditRepository.save(credit)
+        val creditCode = credit.creditCode
+
+        // when
+
+        // then
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("${URL}/${creditCode}?customerId=${customerId}")
+                .accept(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andDo(MockMvcResultHandlers.print())
+    }
+
     private fun builderCreditDto(
         creditValue: BigDecimal = 1000.toBigDecimal(),
         dayFirstOfInstallment: LocalDate = LocalDate.now().plusDays(1),
